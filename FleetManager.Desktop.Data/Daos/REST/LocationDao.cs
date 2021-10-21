@@ -1,4 +1,5 @@
-﻿using FleetManager.Desktop.Model;
+﻿using FleetManager.Desktop.Data.Daos.REST.Model;
+using FleetManager.Desktop.Model;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,12 @@ namespace FleetManager.Desktop.Data.Daos.REST
 
         public Location Create(Location model)
         {
-            throw new NotImplementedException();
+            IRestClient client = DataContext.Open();
+            IRestRequest request = new RestRequest("/api/Locations", Method.POST);
+            request.AddParameter("Name", model.Name);
+            
+            client.Post<Location>(request);
+            return model;
         }
 
         public bool Delete(Location model)
@@ -31,12 +37,32 @@ namespace FleetManager.Desktop.Data.Daos.REST
 
         public IEnumerable<Location> Read()
         {
-            throw new NotImplementedException();
+            IRestClient client = DataContext.Open();
+            IRestRequest request = new RestRequest("/api/Locations", Method.GET);
+
+            client.Get<IEnumerable<Location>>(request);
+            IRestResponse<IEnumerable<LocationDto>> response = client.Get<IEnumerable<LocationDto>>(request);
+            List<Location> result = new();
+            foreach (LocationDto location in response.Data)
+            {
+                result.Add(location.Map());
+            }
+            return result;
         }
 
         public IEnumerable<Location> Read(Func<Location, bool> predicate)
         {
-            throw new NotImplementedException();
+            IRestClient client = DataContext.Open();
+            IRestRequest request = new RestRequest("/api/Locations", Method.GET);
+
+            client.Get<IEnumerable<Location>>(request);
+            IRestResponse<IEnumerable<LocationDto>> response = client.Get<IEnumerable<LocationDto>>(request);
+            List<Location> result = new();
+            foreach (LocationDto location in response.Data)
+            {
+                result.Add(location.Map());
+            }
+            return result.Where(predicate);
         }
 
         public bool Update(Location model)
@@ -44,4 +70,7 @@ namespace FleetManager.Desktop.Data.Daos.REST
             throw new NotImplementedException();
         }
     }
+
+       
+    
 }

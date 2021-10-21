@@ -20,5 +20,12 @@ namespace FleetManager.Desktop.Data.Daos.REST.Model
 
             };
         }
+        public static Location Map(this LocationDto locationDto) {
+            return new Location
+            {
+                Id = int.Parse(locationDto.Href[(locationDto.Href.LastIndexOf("/") + 1)..]),
+                Name = null
+            };
+        }
     }
 }
