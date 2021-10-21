@@ -1,4 +1,5 @@
 ﻿using FleetManager.Desktop.Model;
+using RestSharp;
 using System;
 
 namespace FleetManager.Desktop.Data
@@ -18,7 +19,13 @@ namespace FleetManager.Desktop.Data
                     var dao when dao == typeof(Car) => new Daos.Memory.CarDao(dataContext as ITypedDataContext) as IDao<TModel>,
                     var dao when dao == typeof(Location) => new Daos.Memory.LocationDao(dataContext as ITypedDataContext) as IDao<TModel>,
                     _ => throw new DaoFactoryException($"Model [{typeof(TModel).Name}] not supported"),
-                };
+                }; 
+
+            }
+            if (typeof(IDataContext<IRestClient>).IsAssignableFrom(dataContextType))
+            {
+                var dao when dao == typeof(Car) => new Daos.REST.CarDao(dataContext as IDataContext<IRestClient>) as IDao<TModel>,
+                    var dao when dao == typeof(Location) => new Daos.REST.LocationDao(dataContext as IDataContext<IRestClient>) as IDao<TModel>,
             }
             throw new DaoFactoryException($"DataContext [{dataContext}] not supported");
         }

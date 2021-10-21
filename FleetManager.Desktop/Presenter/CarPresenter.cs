@@ -13,8 +13,9 @@ namespace FleetManager.Desktop.Presenter
         {
             // TODO: (Step 2) change the call to the dao factory so it recieves the data context
             // for the WebAPI and thus returns a dao that calls that instead of the test data
-            _carData = DaoFactory.Create<Car>(MemoryDataContext.Instance);
-            _locationData = DaoFactory.Create<Location>(MemoryDataContext.Instance);
+           // _carData = DaoFactory.Create<Car>(MemoryDataContext.Instance);
+            _carData = DaoFactory.Create<Car>(RestDataContext.Instance);
+            _locationData = DaoFactory.Create<Location>(RestDataContext.Instance);
         }
 
         public IEnumerable<CarModel> GetAllCars()
