@@ -34,7 +34,13 @@ namespace FleetManager.Desktop.Data.Daos.REST
 
         public bool Delete(Car model)
         {
-            throw new NotImplementedException();
+            IRestClient client = DataContext.Open();
+            IRestRequest request = new RestRequest("/api/cars", Method.DELETE);
+            request.AddUrlSegment("id", model.Id);
+            client.Delete<Car>(request); 
+            
+            return false ;
+
         }
 
         public IEnumerable<Car> Read()

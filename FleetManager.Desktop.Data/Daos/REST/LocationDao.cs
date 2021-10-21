@@ -32,7 +32,12 @@ namespace FleetManager.Desktop.Data.Daos.REST
 
         public bool Delete(Location model)
         {
-            throw new NotImplementedException();
+            IRestClient client = DataContext.Open();
+            IRestRequest request = new RestRequest("/api/Locations", Method.DELETE);
+            request.AddUrlSegment("id", model.Id);
+            client.Delete<Location>(request);
+
+            return false;
         }
 
         public IEnumerable<Location> Read()
